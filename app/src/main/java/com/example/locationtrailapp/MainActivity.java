@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected LocationListener locationListener;
     protected Context context;
     TextView txtLat;
+    Button btn_reqst;
     String lat;
     String provider;
     protected String latitude, longitude;
@@ -27,8 +29,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtLat = (TextView) findViewById(R.id.textv1);
+        txtLat = findViewById(R.id.textv1);
+        btn_reqst= findViewById(R.id.b1);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -39,20 +43,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
 
 
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        txtLat = (TextView) findViewById(R.id.textv1);
-        txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+        //txtLat = findViewById(R.id.textv1);
+        txtLat.setText( "location.getLatitude()  + location.getLongitude()");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude","disable");
+        Log.d("Latitude","status");
     }
 
     @Override
@@ -63,6 +67,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onProviderDisabled(String provider) {
-        Log.d("Latitude","status");
+        Log.d("Latitude","dsable");
     }
 }
